@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MovieHub</title>
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="favicon.svg" type="image/x-icon" />
+  <!-- Google font inks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <!-- Javascript links -->
+  <script src="./assets/js/global.js" defer></script>
+  <script type="module" src="./assets/js/suggestions.js"></script>
+</head>
+
+<body onload="fetchGenreData()">
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html">
+      <img src="./assets/images/logo.png" width="140" height="32" alt="MovieHub Home" />
+    </a>
+    <div class="search-box" search-box>
+      <div class="search-wrapper" search-wrapper>
+        <input type="text" name="search" aria-label="search movies" placeholder="Search any Movie..." class="search-field" autocomplete="off" search-field />
+        <img src="./assets/images/search.png" width="24" height="24" alt="Search" class="leading-icon" />
+      </div>
+      <button class="search-btn" search-toggler menu-close>
+        <img src="./assets/images/close.png" alt="close search box" width="24" height="24" />
+      </button>
+    </div>
+
+    <button class="search-btn" search-toggler menu-close>
+      <img src="./assets/images/search.png" width="24" height="24" alt="open search box" />
+    </button>
+    <div class="login">
+      <button class="menu-btn active" menu-btn menu-toggler>
+        <img src="./assets/images/menu.png" width="24" height="24" alt="open menu" class="menu" />
+        <img src="./assets/images/menu-close.png" alt="close menu" width="24" height="24" class="close" />
+      </button>
+        <a href="./assets/php/update_profile.php">My Account</a>
+        <a href="./assets/php/logout.php">Logout</a>
+
+    </div>
+  </header>
+
+
+  <main>
+    <!-- Sidebar -->
+    <nav class="sidebar" sidebar></nav>
+    <div class="overlay" overlay menu-toggler></div>
+
+    <article class="container" page-content></article>
+    <script>
+      // Define the fetchGenreData function
+      async function fetchGenreData() {
+  try {
+    const response = await fetch('assets/php/fetch_genre.php');
+    const contentType = response.headers.get('content-type');
+    if (!response.ok || !contentType || !contentType.includes('application/json')) {
+      throw new Error('Failed to fetch genre data. Invalid response or content type.');
+    }
+    const genreData = await response.json();
+    handleGenreData(genreData);
+  } catch (error) {
+    console.error('Error fetching genre data:', error);
+    const responseText = await response.text();
+    console.error('Response:', responseText);
+  }
+}
+
+// Define the handleGenreData function
+function handleGenreData(genreData) {
+  // Handle the received genre data here
+  // Extract genre IDs and combine them with genre data into an array of objects
+  const combinedData = Object.keys(genreData).map(genreId => ({
+    id: genreId,
+    name: genreData[genreId]
+  }));
+  
+  // Store the combined data in local storage
+  localStorage.setItem('genreCombinedData', JSON.stringify(combinedData));
+
+}
+
+
+    </script>
+</body>
+</main>
+
+</html>

@@ -1,0 +1,11 @@
+RewriteEngine On
+RewriteBase /moviehub/
+
+# Redirect /login.php to /assets/php/login.php
+RewriteRule ^login\.php$ assets/php/login.php [L]
+
+# Redirect /register.php to /assets/php/register.php
+RewriteRule ^register\.php$ assets/php/register.php [L]
+
+# Redirect /profile.php to /assets/php/profile.php
+RewriteRule ^profile\.php$ assets/php/profile.php [L]
